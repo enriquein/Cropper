@@ -100,7 +100,8 @@ namespace Fusion8.Cropper
 		#region Constants
 
 		private const int ResizeBorderWidth = 15;
-		private const int TransparentMargin = 60;
+		private int TransparentMargin = 60;
+        private bool FullScreenExpansion;
 		private const int TabHeight = 15;
 		private const int TabTopWidth = 45;
 		private const int TabBottomWidth = 60;
@@ -141,21 +142,7 @@ namespace Fusion8.Cropper
 		private Point mouseDownPoint;
 
 		// Point locations for drawing the tabs.
-		private readonly Point[] points = new Point[]
-			{
-				new Point(TransparentMargin - TabHeight,
-				          TransparentMargin - TabHeight),
-				new Point(TransparentMargin + TabTopWidth,
-				          TransparentMargin - TabHeight),
-				new Point(TransparentMargin + TabBottomWidth,
-				          TransparentMargin),
-				new Point(TransparentMargin,
-				          TransparentMargin),
-				new Point(TransparentMargin,
-				          TransparentMargin + TabBottomWidth),
-				new Point(TransparentMargin - TabHeight,
-				          TransparentMargin + TabTopWidth)
-			};
+		private Point[] points;
 
 		private Rectangle mouseDownRect;
 		private Rectangle dialogCloseRectangle;
@@ -265,7 +252,24 @@ namespace Fusion8.Cropper
 		    Configuration.Current.ActiveCropWindow = this;
 			imageCapture = new ImageCapture();
 			ApplyConfiguration();
-			colorTables.Add(new CropFormBlueColorTable());
+
+            points = new Point[]
+			{
+				new Point(TransparentMargin - TabHeight,
+				          TransparentMargin - TabHeight),
+				new Point(TransparentMargin + TabTopWidth,
+				          TransparentMargin - TabHeight),
+				new Point(TransparentMargin + TabBottomWidth,
+				          TransparentMargin),
+				new Point(TransparentMargin,
+				          TransparentMargin),
+				new Point(TransparentMargin,
+				          TransparentMargin + TabBottomWidth),
+				new Point(TransparentMargin - TabHeight,
+				          TransparentMargin + TabTopWidth)
+			};
+			
+            colorTables.Add(new CropFormBlueColorTable());
 			colorTables.Add(new CropFormDarkColorTable());
 			colorTables.Add(new CropFormLightColorTable());
 			currentColorTable = (CropFormColorTable) colorTables[0];
@@ -1108,6 +1112,8 @@ namespace Fusion8.Cropper
 		private void ApplyConfiguration()
 		{
 			Settings settings = Configuration.Current;
+            FullScreenExpansion = settings.AllowFullScreenExpansion;
+            TransparentMargin = FullScreenExpansion ? 0 : 60;
 			userFormSize = settings.UserSize;
 			VisibleClientSize = userFormSize;
 			colorIndex = settings.ColorIndex;
@@ -1116,9 +1122,7 @@ namespace Fusion8.Cropper
 			Location = settings.Location;
 			TrapPrintScreen = settings.TrapPrintScreen;
 			TopMost = settings.AlwaysOnTop;
-
-		    
-
+            
 		    if (settings.UserOpacity < 0.1 || settings.UserOpacity > 0.9)
 				settings.UserOpacity = 0.4;
 			
@@ -1176,7 +1180,9 @@ namespace Fusion8.Cropper
 			if (currentColorTable != null)
 			{
 				PaintMainFormArea(graphics, visibleFormArea);
-				PaintSizeTabs(graphics, points);
+                if(!FullScreenExpansion)
+			        PaintSizeTabs(graphics, points);
+
 				if (showHelp)
 					DrawHelp(graphics);
 				else if (showAbout)
@@ -1189,8 +1195,11 @@ namespace Fusion8.Cropper
 				Point grabberCorner = new Point(Width - TransparentMargin, Height - TransparentMargin);
 				PaintGrabber(graphics, grabberCorner);
 				PaintOutputFormat(graphics, VisibleWidth, VisibleHeight);
-				PaintWidthString(graphics, VisibleWidth);
-				PaintHeightString(graphics, VisibleHeight);
+                if (!FullScreenExpansion)
+                {
+                    PaintWidthString(graphics, VisibleWidth);
+                    PaintHeightString(graphics, VisibleHeight);
+                }
 			}
 		}
 
