@@ -103,6 +103,7 @@ namespace Fusion8.Cropper.Core
         private string outputPath = DefaultOutputPath;
         private bool allowMultipleInstances = true;
         private bool includeMouseCursorInCapture;
+        private bool allowFullScreenExpansion = false;
 
         private string fileNameTemplate = FileNameTemplate.DefaultFullImageTemplate;
         private string fileNameThumbTemplate = FileNameTemplate.DefaultThumbImageTemplate;
@@ -308,6 +309,13 @@ namespace Fusion8.Cropper.Core
         {
             get { return includeMouseCursorInCapture; }
             set { includeMouseCursorInCapture = value; }
+        }
+
+        [XmlElement("AllowFullScreenExpansion", typeof(bool))]
+        public bool AllowFullScreenExpansion
+        {
+            get { return allowFullScreenExpansion; }
+            set { allowFullScreenExpansion = value; }
         }
 
         [XmlArray("PluginSettings")]
