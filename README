@@ -1,0 +1,10 @@
+I'm not the original developer in charge of 
+the Cropper project (http://cropper.codeplex.com) from
+which this project is based off from. The reason 
+for this fork to exist is that it seems that the
+current project's admin is really busy and can't
+commit patches that are sent his way. This fork will
+provide the patched binaries/installer until they make it
+to the trunk over in codeplex. Feel free to do pull requests
+and I'll make sure to post a patch over at codeplex to give
+back to the original project.
