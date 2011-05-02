@@ -100,7 +100,7 @@ namespace Fusion8.Cropper
 		#region Constants
 
 		private const int ResizeBorderWidth = 15;
-		private int TransparentMargin;
+		private int TransparentMargin = 60;
         private bool FullScreenExpansion;
 		private const int TabHeight = 15;
 		private const int TabTopWidth = 45;
@@ -1112,6 +1112,8 @@ namespace Fusion8.Cropper
 		private void ApplyConfiguration()
 		{
 			Settings settings = Configuration.Current;
+            FullScreenExpansion = settings.AllowFullScreenExpansion;
+            TransparentMargin = FullScreenExpansion ? 0 : 60;
 			userFormSize = settings.UserSize;
 			VisibleClientSize = userFormSize;
 			colorIndex = settings.ColorIndex;
@@ -1120,8 +1122,6 @@ namespace Fusion8.Cropper
 			Location = settings.Location;
 			TrapPrintScreen = settings.TrapPrintScreen;
 			TopMost = settings.AlwaysOnTop;
-            FullScreenExpansion = settings.AllowFullScreenExpansion;
-            TransparentMargin = FullScreenExpansion ? 0 : 60;
             
 		    if (settings.UserOpacity < 0.1 || settings.UserOpacity > 0.9)
 				settings.UserOpacity = 0.4;
