@@ -252,20 +252,20 @@ namespace Fusion8.Cropper
 		    Configuration.Current.ActiveCropWindow = this;
 			imageCapture = new ImageCapture();
 			ApplyConfiguration();
-            
+
             points = new Point[]
 			{
-				new Point(TransparentMargin + TabHeight,
-				          TransparentMargin + TabHeight),
+				new Point(TransparentMargin - TabHeight,
+				          TransparentMargin - TabHeight),
 				new Point(TransparentMargin + TabTopWidth,
-				          TransparentMargin + TabHeight),
+				          TransparentMargin - TabHeight),
 				new Point(TransparentMargin + TabBottomWidth,
 				          TransparentMargin),
 				new Point(TransparentMargin,
 				          TransparentMargin),
 				new Point(TransparentMargin,
 				          TransparentMargin + TabBottomWidth),
-				new Point(TransparentMargin + TabHeight,
+				new Point(TransparentMargin - TabHeight,
 				          TransparentMargin + TabTopWidth)
 			};
 			
