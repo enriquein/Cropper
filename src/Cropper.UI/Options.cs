@@ -160,6 +160,7 @@ namespace Fusion8.Cropper
         private GroupBox otherOptionsDescription;
         private CheckBox includeMouseCursorInCapture;
         private CheckBox allowFullScreenExpansion;
+        private CheckBox useAlternateKeysForCropForm;
         private bool addingSize;
 
         #endregion
@@ -185,6 +186,7 @@ namespace Fusion8.Cropper
             allowMultipleCropperInstances.Checked = Configuration.Current.AllowMultipleInstances;
             includeMouseCursorInCapture.Checked = Configuration.Current.IncludeMouseCursorInCapture;
             allowFullScreenExpansion.Checked = Configuration.Current.AllowFullScreenExpansion;
+            useAlternateKeysForCropForm.Checked = Configuration.Current.UseAlternateKeysForCropForm;
 
             foreach (CropSize size in Configuration.Current.PredefinedSizes)
                 predefinedSizeList.Items.Add(size);
@@ -272,6 +274,8 @@ namespace Fusion8.Cropper
             this.widthInput = new System.Windows.Forms.TextBox();
             this.heightInput = new System.Windows.Forms.TextBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.fullImageMenuButton = new Fusion8.Cropper.Core.DropDownButton();
+            this.thumbImageMenuButton = new Fusion8.Cropper.Core.DropDownButton();
             this.colorChooserButton = new System.Windows.Forms.Button();
             this.backgroundColor = new System.Windows.Forms.Panel();
             this.nonRectangularCapturesGroup = new System.Windows.Forms.GroupBox();
@@ -290,6 +294,7 @@ namespace Fusion8.Cropper
             this.outputTab = new System.Windows.Forms.TabPage();
             this.capturesTab = new System.Windows.Forms.TabPage();
             this.otherOptionsDescription = new System.Windows.Forms.GroupBox();
+            this.allowFullScreenExpansion = new System.Windows.Forms.CheckBox();
             this.includeMouseCursorInCapture = new System.Windows.Forms.CheckBox();
             this.allowMultipleCropperInstances = new System.Windows.Forms.CheckBox();
             this.appearanceTab = new System.Windows.Forms.TabPage();
@@ -311,14 +316,12 @@ namespace Fusion8.Cropper
             this.opacityDescription = new System.Windows.Forms.Label();
             this.perPixelAlphaBlend = new System.Windows.Forms.CheckBox();
             this.keyboardTab = new System.Windows.Forms.TabPage();
+            this.hotKeySelection1 = new Fusion8.Cropper.Core.HotKeySelection();
             this.pluginsTab = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
-            this.fullImageMenuButton = new Fusion8.Cropper.Core.DropDownButton();
-            this.thumbImageMenuButton = new Fusion8.Cropper.Core.DropDownButton();
-            this.hotKeySelection1 = new Fusion8.Cropper.Core.HotKeySelection();
-            this.allowFullScreenExpansion = new System.Windows.Forms.CheckBox();
+            this.useAlternateKeysForCropForm = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.nonRectangularCapturesGroup.SuspendLayout();
             this.outputTemplateGroup.SuspendLayout();
@@ -348,7 +351,7 @@ namespace Fusion8.Cropper
             // okButton
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.okButton.Location = new System.Drawing.Point(191, 475);
+            this.okButton.Location = new System.Drawing.Point(191, 496);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 29);
             this.okButton.TabIndex = 1;
@@ -359,7 +362,7 @@ namespace Fusion8.Cropper
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(275, 475);
+            this.cancelButton.Location = new System.Drawing.Point(275, 496);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 29);
             this.cancelButton.TabIndex = 2;
@@ -551,6 +554,42 @@ namespace Fusion8.Cropper
             this.heightInput.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.HandleSizeInputPreviewKeyDown);
             this.heightInput.Enter += new System.EventHandler(this.HandleSizeInputEnter);
             // 
+            // fullImageMenuButton
+            // 
+            this.fullImageMenuButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.fullImageMenuButton.BackColor = System.Drawing.SystemColors.Control;
+            this.fullImageMenuButton.Cursor = System.Windows.Forms.Cursors.Default;
+            this.fullImageMenuButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.fullImageMenuButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.fullImageMenuButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.fullImageMenuButton.Location = new System.Drawing.Point(272, 108);
+            this.fullImageMenuButton.Name = "fullImageMenuButton";
+            this.fullImageMenuButton.Size = new System.Drawing.Size(23, 20);
+            this.fullImageMenuButton.TabIndex = 3;
+            this.fullImageMenuButton.TabStop = false;
+            this.fullImageMenuButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolTip.SetToolTip(this.fullImageMenuButton, "Insert template text.");
+            this.fullImageMenuButton.UseVisualStyleBackColor = false;
+            this.fullImageMenuButton.Click += new System.EventHandler(this.HandleFullImageMenuButtonClick);
+            // 
+            // thumbImageMenuButton
+            // 
+            this.thumbImageMenuButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.thumbImageMenuButton.BackColor = System.Drawing.SystemColors.Control;
+            this.thumbImageMenuButton.Cursor = System.Windows.Forms.Cursors.Default;
+            this.thumbImageMenuButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.thumbImageMenuButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.thumbImageMenuButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.thumbImageMenuButton.Location = new System.Drawing.Point(272, 160);
+            this.thumbImageMenuButton.Name = "thumbImageMenuButton";
+            this.thumbImageMenuButton.Size = new System.Drawing.Size(23, 20);
+            this.thumbImageMenuButton.TabIndex = 6;
+            this.thumbImageMenuButton.TabStop = false;
+            this.thumbImageMenuButton.Text = "6";
+            this.toolTip.SetToolTip(this.thumbImageMenuButton, "Insert template text.");
+            this.thumbImageMenuButton.UseVisualStyleBackColor = false;
+            this.thumbImageMenuButton.Click += new System.EventHandler(this.HandleThumbImageMenuButtonClick);
+            // 
             // colorChooserButton
             // 
             this.colorChooserButton.Font = new System.Drawing.Font("Tahoma", 8.25F);
@@ -575,7 +614,7 @@ namespace Fusion8.Cropper
             this.nonRectangularCapturesGroup.Controls.Add(this.colorNonFormAreaCheck);
             this.nonRectangularCapturesGroup.Controls.Add(this.backgroundColor);
             this.nonRectangularCapturesGroup.Controls.Add(this.colorChooserButton);
-            this.nonRectangularCapturesGroup.Location = new System.Drawing.Point(8, 148);
+            this.nonRectangularCapturesGroup.Location = new System.Drawing.Point(8, 160);
             this.nonRectangularCapturesGroup.Name = "nonRectangularCapturesGroup";
             this.nonRectangularCapturesGroup.Size = new System.Drawing.Size(316, 172);
             this.nonRectangularCapturesGroup.TabIndex = 1;
@@ -655,12 +694,13 @@ namespace Fusion8.Cropper
             // 
             // hotKeysGroup
             // 
+            this.hotKeysGroup.Controls.Add(this.useAlternateKeysForCropForm);
             this.hotKeysGroup.Controls.Add(this.keepPrntScrnOnClipboard);
             this.hotKeysGroup.Controls.Add(this.hotKeysDescription);
             this.hotKeysGroup.Controls.Add(this.trapPrintScreen);
-            this.hotKeysGroup.Location = new System.Drawing.Point(8, 8);
+            this.hotKeysGroup.Location = new System.Drawing.Point(8, 3);
             this.hotKeysGroup.Name = "hotKeysGroup";
-            this.hotKeysGroup.Size = new System.Drawing.Size(316, 132);
+            this.hotKeysGroup.Size = new System.Drawing.Size(316, 151);
             this.hotKeysGroup.TabIndex = 0;
             this.hotKeysGroup.TabStop = false;
             this.hotKeysGroup.Text = "&Hot Keys";
@@ -683,7 +723,7 @@ namespace Fusion8.Cropper
             // 
             // trapPrintScreen
             // 
-            this.trapPrintScreen.Location = new System.Drawing.Point(20, 80);
+            this.trapPrintScreen.Location = new System.Drawing.Point(20, 83);
             this.trapPrintScreen.Name = "trapPrintScreen";
             this.trapPrintScreen.Size = new System.Drawing.Size(268, 24);
             this.trapPrintScreen.TabIndex = 1;
@@ -702,7 +742,7 @@ namespace Fusion8.Cropper
             this.optionsTabs.Location = new System.Drawing.Point(8, 6);
             this.optionsTabs.Name = "optionsTabs";
             this.optionsTabs.SelectedIndex = 0;
-            this.optionsTabs.Size = new System.Drawing.Size(344, 460);
+            this.optionsTabs.Size = new System.Drawing.Size(344, 481);
             this.optionsTabs.TabIndex = 0;
             // 
             // outputTab
@@ -711,7 +751,7 @@ namespace Fusion8.Cropper
             this.outputTab.Controls.Add(this.outputTemplateGroup);
             this.outputTab.Location = new System.Drawing.Point(4, 22);
             this.outputTab.Name = "outputTab";
-            this.outputTab.Size = new System.Drawing.Size(336, 395);
+            this.outputTab.Size = new System.Drawing.Size(336, 434);
             this.outputTab.TabIndex = 0;
             this.outputTab.Text = "Output";
             this.outputTab.UseVisualStyleBackColor = true;
@@ -723,7 +763,7 @@ namespace Fusion8.Cropper
             this.capturesTab.Controls.Add(this.otherOptionsDescription);
             this.capturesTab.Location = new System.Drawing.Point(4, 22);
             this.capturesTab.Name = "capturesTab";
-            this.capturesTab.Size = new System.Drawing.Size(336, 434);
+            this.capturesTab.Size = new System.Drawing.Size(336, 455);
             this.capturesTab.TabIndex = 1;
             this.capturesTab.Text = "Capturing";
             this.capturesTab.UseVisualStyleBackColor = true;
@@ -733,12 +773,21 @@ namespace Fusion8.Cropper
             this.otherOptionsDescription.Controls.Add(this.allowFullScreenExpansion);
             this.otherOptionsDescription.Controls.Add(this.includeMouseCursorInCapture);
             this.otherOptionsDescription.Controls.Add(this.allowMultipleCropperInstances);
-            this.otherOptionsDescription.Location = new System.Drawing.Point(8, 326);
+            this.otherOptionsDescription.Location = new System.Drawing.Point(8, 338);
             this.otherOptionsDescription.Name = "otherOptionsDescription";
             this.otherOptionsDescription.Size = new System.Drawing.Size(316, 105);
             this.otherOptionsDescription.TabIndex = 4;
             this.otherOptionsDescription.TabStop = false;
             this.otherOptionsDescription.Text = "Other &Options";
+            // 
+            // allowFullScreenExpansion
+            // 
+            this.allowFullScreenExpansion.Location = new System.Drawing.Point(19, 63);
+            this.allowFullScreenExpansion.Name = "allowFullScreenExpansion";
+            this.allowFullScreenExpansion.Size = new System.Drawing.Size(268, 36);
+            this.allowFullScreenExpansion.TabIndex = 5;
+            this.allowFullScreenExpansion.Text = "Allow crop form to expand to the entire screen. (Disables size tabs. Requires Cro" +
+                "pper restart.)";
             // 
             // includeMouseCursorInCapture
             // 
@@ -763,7 +812,7 @@ namespace Fusion8.Cropper
             this.appearanceTab.Controls.Add(this.opaityGroup);
             this.appearanceTab.Location = new System.Drawing.Point(4, 22);
             this.appearanceTab.Name = "appearanceTab";
-            this.appearanceTab.Size = new System.Drawing.Size(336, 395);
+            this.appearanceTab.Size = new System.Drawing.Size(336, 455);
             this.appearanceTab.TabIndex = 2;
             this.appearanceTab.Text = "Appearance";
             this.appearanceTab.UseVisualStyleBackColor = true;
@@ -943,10 +992,29 @@ namespace Fusion8.Cropper
             this.keyboardTab.Location = new System.Drawing.Point(4, 22);
             this.keyboardTab.Name = "keyboardTab";
             this.keyboardTab.Padding = new System.Windows.Forms.Padding(3);
-            this.keyboardTab.Size = new System.Drawing.Size(336, 395);
+            this.keyboardTab.Size = new System.Drawing.Size(336, 434);
             this.keyboardTab.TabIndex = 4;
             this.keyboardTab.Text = "Keyboard";
             this.keyboardTab.UseVisualStyleBackColor = true;
+            // 
+            // hotKeySelection1
+            // 
+            this.hotKeySelection1.FocusedItem = null;
+            this.hotKeySelection1.FullRowSelect = true;
+            this.hotKeySelection1.GridLines = true;
+            this.hotKeySelection1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
+            this.hotKeySelection1.HideSelection = false;
+            this.hotKeySelection1.HotTracking = false;
+            this.hotKeySelection1.HoverSelection = false;
+            this.hotKeySelection1.Location = new System.Drawing.Point(30, 30);
+            this.hotKeySelection1.MultiSelect = true;
+            this.hotKeySelection1.Name = "hotKeySelection1";
+            this.hotKeySelection1.Scrollable = true;
+            this.hotKeySelection1.ShowItemToolTips = false;
+            this.hotKeySelection1.Size = new System.Drawing.Size(267, 160);
+            this.hotKeySelection1.SmallImageList = null;
+            this.hotKeySelection1.TabIndex = 0;
+            this.hotKeySelection1.TopItem = null;
             // 
             // pluginsTab
             // 
@@ -954,7 +1022,7 @@ namespace Fusion8.Cropper
             this.pluginsTab.Controls.Add(this.comboBox1);
             this.pluginsTab.Location = new System.Drawing.Point(4, 22);
             this.pluginsTab.Name = "pluginsTab";
-            this.pluginsTab.Size = new System.Drawing.Size(336, 395);
+            this.pluginsTab.Size = new System.Drawing.Size(336, 434);
             this.pluginsTab.TabIndex = 3;
             this.pluginsTab.Text = "Plug-ins";
             this.pluginsTab.UseVisualStyleBackColor = true;
@@ -979,74 +1047,18 @@ namespace Fusion8.Cropper
             // 
             this.colorDialog.AnyColor = true;
             // 
-            // fullImageMenuButton
+            // useAlternateKeysForCropForm
             // 
-            this.fullImageMenuButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.fullImageMenuButton.BackColor = System.Drawing.SystemColors.Control;
-            this.fullImageMenuButton.Cursor = System.Windows.Forms.Cursors.Default;
-            this.fullImageMenuButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.fullImageMenuButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.fullImageMenuButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.fullImageMenuButton.Location = new System.Drawing.Point(272, 108);
-            this.fullImageMenuButton.Name = "fullImageMenuButton";
-            this.fullImageMenuButton.Size = new System.Drawing.Size(23, 20);
-            this.fullImageMenuButton.TabIndex = 3;
-            this.fullImageMenuButton.TabStop = false;
-            this.fullImageMenuButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.toolTip.SetToolTip(this.fullImageMenuButton, "Insert template text.");
-            this.fullImageMenuButton.UseVisualStyleBackColor = false;
-            this.fullImageMenuButton.Click += new System.EventHandler(this.HandleFullImageMenuButtonClick);
-            // 
-            // thumbImageMenuButton
-            // 
-            this.thumbImageMenuButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.thumbImageMenuButton.BackColor = System.Drawing.SystemColors.Control;
-            this.thumbImageMenuButton.Cursor = System.Windows.Forms.Cursors.Default;
-            this.thumbImageMenuButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.thumbImageMenuButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.thumbImageMenuButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.thumbImageMenuButton.Location = new System.Drawing.Point(272, 160);
-            this.thumbImageMenuButton.Name = "thumbImageMenuButton";
-            this.thumbImageMenuButton.Size = new System.Drawing.Size(23, 20);
-            this.thumbImageMenuButton.TabIndex = 6;
-            this.thumbImageMenuButton.TabStop = false;
-            this.thumbImageMenuButton.Text = "6";
-            this.toolTip.SetToolTip(this.thumbImageMenuButton, "Insert template text.");
-            this.thumbImageMenuButton.UseVisualStyleBackColor = false;
-            this.thumbImageMenuButton.Click += new System.EventHandler(this.HandleThumbImageMenuButtonClick);
-            // 
-            // hotKeySelection1
-            // 
-            this.hotKeySelection1.FocusedItem = null;
-            this.hotKeySelection1.FullRowSelect = true;
-            this.hotKeySelection1.GridLines = true;
-            this.hotKeySelection1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
-            this.hotKeySelection1.HideSelection = false;
-            this.hotKeySelection1.HotTracking = false;
-            this.hotKeySelection1.HoverSelection = false;
-            this.hotKeySelection1.Location = new System.Drawing.Point(30, 30);
-            this.hotKeySelection1.MultiSelect = true;
-            this.hotKeySelection1.Name = "hotKeySelection1";
-            this.hotKeySelection1.Scrollable = true;
-            this.hotKeySelection1.ShowItemToolTips = false;
-            this.hotKeySelection1.Size = new System.Drawing.Size(267, 160);
-            this.hotKeySelection1.SmallImageList = null;
-            this.hotKeySelection1.TabIndex = 0;
-            this.hotKeySelection1.TopItem = null;
-            // 
-            // allowFullScreenExpansion
-            // 
-            this.allowFullScreenExpansion.Location = new System.Drawing.Point(19, 63);
-            this.allowFullScreenExpansion.Name = "allowFullScreenExpansion";
-            this.allowFullScreenExpansion.Size = new System.Drawing.Size(268, 36);
-            this.allowFullScreenExpansion.TabIndex = 5;
-            this.allowFullScreenExpansion.Text = "Allow crop form to expand to the entire screen. (Disables size tabs. Requires Cro" +
-                "pper restart.)";
+            this.useAlternateKeysForCropForm.Location = new System.Drawing.Point(20, 126);
+            this.useAlternateKeysForCropForm.Name = "useAlternateKeysForCropForm";
+            this.useAlternateKeysForCropForm.Size = new System.Drawing.Size(280, 24);
+            this.useAlternateKeysForCropForm.TabIndex = 3;
+            this.useAlternateKeysForCropForm.Text = "Ctrl+PrintScreen shows crop form (Requires Restart)";
             // 
             // Options
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(361, 514);
+            this.ClientSize = new System.Drawing.Size(361, 535);
             this.Controls.Add(this.optionsTabs);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);
@@ -1118,6 +1130,7 @@ namespace Fusion8.Cropper
             Configuration.Current.AllowMultipleInstances = allowMultipleCropperInstances.Checked;
             Configuration.Current.IncludeMouseCursorInCapture = includeMouseCursorInCapture.Checked;
             Configuration.Current.AllowFullScreenExpansion = allowFullScreenExpansion.Checked;
+            Configuration.Current.UseAlternateKeysForCropForm = useAlternateKeysForCropForm.Checked;
 
             List<CropSize> cropSize = new List<CropSize>();
             foreach (CropSize size in predefinedSizeList.Items)
