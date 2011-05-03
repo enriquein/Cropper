@@ -73,9 +73,11 @@ namespace Fusion8.Cropper
 		private ushort printScreenId;
 		private ushort altPrintScreenId;
 		private ushort altCtrlPrintScreenId;
+        private ushort ctrlPrintScreenId;
 		private ushort f12Id;
 		private bool trapPrintScreen = true;
 		private bool hotKeysRegistered;
+        private bool useAlternateKeysForCropForm;
 
 		#endregion
 
@@ -100,13 +102,16 @@ namespace Fusion8.Cropper
 			printScreenId = NativeMethods.GlobalAddAtom("CropperPrintScreen" + DateTime.Now.Ticks);
 			altPrintScreenId = NativeMethods.GlobalAddAtom("CropperAltPrintScreen" + DateTime.Now.Ticks);
 			altCtrlPrintScreenId = NativeMethods.GlobalAddAtom("CropperAltCtrlPrintScreen" + DateTime.Now.Ticks);
+            ctrlPrintScreenId = NativeMethods.GlobalAddAtom("CropperCtrlPrintScreen" + DateTime.Now.Ticks);
             f12Id = NativeMethods.GlobalAddAtom("Cropperf12Id" + DateTime.Now.Ticks);
 
 			NativeMethods.RegisterHotKey(Handle, printScreenId, 0, (int) Keys.PrintScreen);
 			NativeMethods.RegisterHotKey(Handle, altPrintScreenId, 1, (int) Keys.PrintScreen);
             NativeMethods.RegisterHotKey(Handle, altCtrlPrintScreenId, 3, (int)Keys.PrintScreen);
-            NativeMethods.RegisterHotKey(Handle, f12Id, 0, (int)Keys.F8);
-			
+            if (useAlternateKeysForCropForm)
+                NativeMethods.RegisterHotKey(Handle, ctrlPrintScreenId, 2, (int)Keys.PrintScreen);
+			else
+                NativeMethods.RegisterHotKey(Handle, f12Id, 0, (int)Keys.F8);
 			hotKeysRegistered = true;
 		}
 		
@@ -115,11 +120,13 @@ namespace Fusion8.Cropper
 			NativeMethods.GlobalDeleteAtom(printScreenId) ;
             NativeMethods.GlobalDeleteAtom(altPrintScreenId);
             NativeMethods.GlobalDeleteAtom(altCtrlPrintScreenId);
+            NativeMethods.GlobalDeleteAtom(ctrlPrintScreenId);
             NativeMethods.GlobalDeleteAtom(f12Id);
 
 			NativeMethods.UnregisterHotKey(Handle, printScreenId);
             NativeMethods.UnregisterHotKey(Handle, altPrintScreenId);
             NativeMethods.UnregisterHotKey(Handle, altCtrlPrintScreenId);
+            NativeMethods.UnregisterHotKey(Handle, ctrlPrintScreenId);
             NativeMethods.UnregisterHotKey(Handle, f12Id);
 			
 			hotKeysRegistered = false;
@@ -127,6 +134,7 @@ namespace Fusion8.Cropper
 		
 		protected CropForm()
 		{
+            useAlternateKeysForCropForm = Fusion8.Cropper.Core.Configuration.Current.UseAlternateKeysForCropForm;
 			if(trapPrintScreen)
 				RegisterHotKeys();
 		}
@@ -150,6 +158,11 @@ namespace Fusion8.Cropper
 					KeyEventArgs args = new KeyEventArgs(Keys.PrintScreen | Keys.Alt | Keys.Control);
 					OnHotKeyPress(args);
 				}
+                else if (m.WParam == (IntPtr)ctrlPrintScreenId)
+                {
+                    KeyEventArgs args = new KeyEventArgs(Keys.PrintScreen | Keys.Control);
+                    OnHotKeyPress(args);
+                }
                 else if (m.WParam == (IntPtr)f12Id)
                 {
                     KeyEventArgs args = new KeyEventArgs(Keys.F8);

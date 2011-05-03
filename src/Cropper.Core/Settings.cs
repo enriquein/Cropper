@@ -104,6 +104,7 @@ namespace Fusion8.Cropper.Core
         private bool allowMultipleInstances = true;
         private bool includeMouseCursorInCapture;
         private bool allowFullScreenExpansion = false;
+        private bool useAlternateKeysForCropForm = false;
 
         private string fileNameTemplate = FileNameTemplate.DefaultFullImageTemplate;
         private string fileNameThumbTemplate = FileNameTemplate.DefaultThumbImageTemplate;
@@ -316,6 +317,13 @@ namespace Fusion8.Cropper.Core
         {
             get { return allowFullScreenExpansion; }
             set { allowFullScreenExpansion = value; }
+        }
+
+        [XmlElement("UseAlternateKeysForCropForm", typeof(bool))]
+        public bool UseAlternateKeysForCropForm
+        {
+            get { return useAlternateKeysForCropForm; }
+            set { useAlternateKeysForCropForm = value; }
         }
 
         [XmlArray("PluginSettings")]
