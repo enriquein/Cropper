@@ -174,6 +174,7 @@ namespace Fusion8.Cropper
 		private MenuItem opacityMenuItem;
 		private MenuItem showHideMenu;
 		private NotifyIcon notifyIcon;
+        private bool useAlternateKeysForCropForm = false;
 
 		private ResizeRegion resizeRegion = ResizeRegion.None;
 		private ResizeRegion thumbResizeRegion;
@@ -667,14 +668,16 @@ namespace Fusion8.Cropper
 		{
 			if (e.KeyCode == Keys.PrintScreen)
 			{
-				if (e.Alt && e.Control)
-					TakeScreenShot(ScreenShotBounds.Window);
-				else if (e.Alt)
-					TakeScreenShot(ScreenShotBounds.ActiveForm);
-				else if(e.KeyCode == Keys.PrintScreen)
+                if (e.Alt && e.Control)
+                    TakeScreenShot(ScreenShotBounds.Window);
+                else if (e.Alt)
+                    TakeScreenShot(ScreenShotBounds.ActiveForm);
+                else if (e.Control && useAlternateKeysForCropForm)
+                    CycleFormVisibility(false);
+                else if (e.KeyCode == Keys.PrintScreen)
                     TakeScreenShot(ScreenShotBounds.FullScreen);
 			}
-            else if (e.KeyCode == Keys.F8)
+            else if ((e.KeyCode == Keys.F8) && !useAlternateKeysForCropForm)
                 CycleFormVisibility(false);
 			base.OnHotKeyPress(e);
 		}
@@ -1114,6 +1117,7 @@ namespace Fusion8.Cropper
 			Settings settings = Configuration.Current;
             FullScreenExpansion = settings.AllowFullScreenExpansion;
             TransparentMargin = FullScreenExpansion ? 0 : 60;
+            useAlternateKeysForCropForm = settings.UseAlternateKeysForCropForm;
 			userFormSize = settings.UserSize;
 			VisibleClientSize = userFormSize;
 			colorIndex = settings.ColorIndex;
