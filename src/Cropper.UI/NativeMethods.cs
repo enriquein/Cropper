@@ -116,7 +116,18 @@ namespace Fusion8.Cropper
 		[DllImport("gdi32.dll", CharSet=CharSet.Ansi, ExactSpelling=true, SetLastError=true)]
 		[return : MarshalAs(UnmanagedType.Bool)]
 		internal static extern bool DeleteObject(IntPtr hObject);
-        
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        delegate void SetProcessDPIAware();
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr LoadLibrary(string dllToLoad);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
+
+        [DllImport("kernel32.dll")]
+        private static extern bool FreeLibrary(IntPtr hModule);
 
 		internal const Int32 WM_SETICON = 0x80;
 		internal const Int32 WM_SETTEXT = 0x000c;
@@ -183,5 +194,20 @@ namespace Fusion8.Cropper
 			}
 			return hwndOwner;
 		}
-	}
+
+        // This needs to be evaluated at runtime, otherwise
+        // the app will complain at launch about not finding the entry
+        // point for the method call. This function only exists in Vista and above.
+        internal static void SetDPIAwarenessIfVistaOrLater()
+        {
+            if (Environment.OSVersion.Version.Major < 6)
+                return;
+
+            IntPtr ptrDll = LoadLibrary("user32.dll");
+            IntPtr ptrProcAddress = GetProcAddress(ptrDll, "SetProcessDPIAware");
+            SetProcessDPIAware setDPIAware = (SetProcessDPIAware)Marshal.GetDelegateForFunctionPointer(ptrProcAddress, typeof(SetProcessDPIAware));
+            setDPIAware();
+            FreeLibrary(ptrDll);
+        }
+    }
 }

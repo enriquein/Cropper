@@ -84,6 +84,7 @@ namespace Fusion8.Cropper
             Mutex mutex = new Mutex(false, "Local\\Cropper", out isFirstInstance);
             if (Configuration.Current.AllowMultipleInstances || isFirstInstance)
             {
+                NativeMethods.SetDPIAwarenessIfVistaOrLater();
                 Application.SetCompatibleTextRenderingDefault(false);
             
                 VisualStyleContext.Create();
