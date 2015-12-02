@@ -147,14 +147,26 @@ namespace Fusion8.Cropper.Core
         }
 
         /// <summary>
-        /// The users last used output directory.
+        /// The users last used output directory; consider <see cref="OutputPathRaw"/> for 'unexpanded' usage
         /// </summary>
-        [XmlElement("OutputDirectory", typeof (String))]
+        [XmlIgnore]
         public string OutputPath
         {
-            get { return outputPath; }
-            set { outputPath = ResolveOutputDirectory(value); }
+			// expand environment variables, issue #1
+			get { return Environment.ExpandEnvironmentVariables(outputPath); }
+            set { OutputPathRaw = value; }
         }
+
+		/// <summary>
+		/// The users last used output directory, "unexpanded"
+		/// </summary>
+		[XmlElement("OutputDirectory", typeof(String))]
+		public string OutputPathRaw
+		{
+			// expand environment variables, issue #1
+			get { return outputPath; }
+			set { outputPath = ResolveOutputDirectory(value); }
+		}
 
         [XmlElement("ColorIndex", typeof (int))]
         public int ColorIndex

@@ -161,5 +161,28 @@ namespace Fusion8.Cropper.Core
             Assert.AreEqual(expectedFullSize, names.FullSize);
             Assert.AreEqual(expectedThumbnail, names.Thumbnail);
         }
+
+		[Test]
+		public void Environment_variables_are_replaced()
+		{
+			string originalPath = Configuration.Current.OutputPath;
+			string outputPath = Configuration.Current.OutputPath = @"%TEMP%\croppertest";
+
+			outputPath = Environment.ExpandEnvironmentVariables(outputPath);
+
+			string extension = "ext";
+			string expectedFullSize = Path.Combine(outputPath, "CropperCapture[1]." + extension);
+			string expectedThumbnail = Path.Combine(outputPath, "CropperCapture[1]Thumbnail." + extension);
+
+			ImagePairNames names = new FileNameTemplate().Parse(extension);
+
+			Console.WriteLine("FullSize: {0}", names.FullSize);
+			Console.WriteLine("Thumbnail: {0}", names.Thumbnail);
+
+			Assert.AreEqual(expectedFullSize, names.FullSize);
+			Assert.AreEqual(expectedThumbnail, names.Thumbnail);
+
+			Configuration.Current.OutputPath = originalPath;
+		}
     }
 }
