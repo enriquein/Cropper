@@ -169,7 +169,7 @@ namespace Fusion8.Cropper
         {
             InitializeComponent();
             folder.Description = SR.FolderBrowseText;
-            folderChooser.Text = Configuration.Current.OutputPath;
+            folderChooser.Text = Configuration.Current.OutputPathRaw;
             fullImageTemplate.Text = Configuration.Current.FullImageTemplate;
             thumbImageTemplate.Text = Configuration.Current.ThumbImageTemplate;
             backgroundColor.BackColor = Color.FromArgb(Configuration.Current.NonFormAreaColorArgb);
