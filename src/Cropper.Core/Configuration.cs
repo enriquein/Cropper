@@ -27,7 +27,7 @@ In return, we simply require that you agree:
 4. That no contributor to the Software will be liable for any of those types
    of damages known as indirect, special, consequential, or incidental
    related to the Software or this license, to the maximum extent the law
-   permits, no matter what legal theory itís based on. Also, you must pass
+   permits, no matter what legal theory it‚Äôs based on. Also, you must pass
    this limitation of liability on whenever you distribute the Software or
    derivative works.
 5. That if you sue anyone over patents that you think may apply to the
@@ -44,7 +44,7 @@ In return, we simply require that you agree:
    pursuant to a solicitation issued on or after December 1, 1995, is
    provided with the commercial license rights set forth in this license,
    and (ii) Software provided pursuant to a solicitation issued prior to
-   December 1, 1995, is provided with ìRestricted Rightsî as set forth in
+   December 1, 1995, is provided with ‚ÄúRestricted Rights‚Äù as set forth in
    FAR, 48 C.F.R. 52.227-14 (June 1987) or DFAR, 48 C.F.R. 252.227-7013
    (Oct 1988), as applicable.
 9. That your rights under this License end automatically if you breach it in
@@ -92,18 +92,21 @@ namespace Fusion8.Cropper.Core
 			{
 				if (cropperSettings == null)
 				{
-                    if (File.Exists(portableConfigPath))
-                    {
-                        cropperSettings = LoadConfiguration(portableConfigPath);
-                        cropperSettings.OutputPath = portableOutputPath;
-                    }
-                    else
-                    {
-                        cropperSettings = LoadConfiguration(configPath);
-                        if (!Directory.Exists(cropperSettings.OutputPath))
-                            cropperSettings.OutputPath = Settings.DefaultOutputPath;
-                    }
-				}
+		                    if (File.Exists(portableConfigPath))
+		                    {
+		                        cropperSettings = LoadConfiguration(portableConfigPath);
+		                    }
+		                    else
+		                    {
+		                        cropperSettings = LoadConfiguration(configPath);
+		                    }
+		 
+		                    if (!Directory.Exists(cropperSettings.OutputPath))
+		                        cropperSettings.OutputPath = Settings.DefaultOutputPath;
+		                    
+		                    // expand environment variables, issue #1
+		                    cropperSettings.OutputPath = Environment.ExpandEnvironmentVariables(cropperSettings.OutputPath);
+		 		}
 				return cropperSettings;
 			}
 		}
