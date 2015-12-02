@@ -396,7 +396,10 @@ namespace Fusion8.Cropper.Core
 
         private string ResolveOutputDirectory(string directory)
         {
-            if (directory != OutputPath)
+			// expand environment variables, issue #1
+			if(directory != null) directory = Environment.ExpandEnvironmentVariables(directory);
+
+			if (directory != OutputPath)
             {
                 if (directory == null || directory.Trim().Length == 0)
                 {

@@ -103,9 +103,6 @@ namespace Fusion8.Cropper.Core
 		 
 		                    if (!Directory.Exists(cropperSettings.OutputPath))
 		                        cropperSettings.OutputPath = Settings.DefaultOutputPath;
-		                    
-		                    // expand environment variables, issue #1
-		                    cropperSettings.OutputPath = Environment.ExpandEnvironmentVariables(cropperSettings.OutputPath);
 		 		}
 				return cropperSettings;
 			}
